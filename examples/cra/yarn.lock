@@ -1047,20 +1047,20 @@
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
 "@dhis2/app-runtime@file:../../runtime":
-  version "2.7.1"
+  version "2.8.0"
   dependencies:
-    "@dhis2/app-service-alerts" "2.7.1"
-    "@dhis2/app-service-config" "2.7.1"
-    "@dhis2/app-service-data" "2.7.1"
+    "@dhis2/app-service-alerts" "2.8.0"
+    "@dhis2/app-service-config" "2.8.0"
+    "@dhis2/app-service-data" "2.8.0"
 
-"@dhis2/app-service-alerts@2.7.1", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "2.7.1"
+"@dhis2/app-service-alerts@2.8.0", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "2.8.0"
 
-"@dhis2/app-service-config@2.7.1", "@dhis2/app-service-config@file:../../services/config":
-  version "2.7.1"
+"@dhis2/app-service-config@2.8.0", "@dhis2/app-service-config@file:../../services/config":
+  version "2.8.0"
 
-"@dhis2/app-service-data@2.7.1", "@dhis2/app-service-data@file:../../services/data":
-  version "2.7.1"
+"@dhis2/app-service-data@2.8.0", "@dhis2/app-service-data@file:../../services/data":
+  version "2.8.0"
 
 "@hapi/address@2.x.x":
   version "2.1.4"
@@ -8654,15 +8654,13 @@ react-scripts@^3.3.0:
   optionalDependencies:
     fsevents "2.1.2"
 
-react@~16.8.6:
-  version "16.8.6"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
-  integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==
+react@~17.0.1:
+  version "17.0.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-17.0.1.tgz#6e0600416bd57574e3f86d92edba3d9008726127"
+  integrity sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-    prop-types "^15.6.2"
-    scheduler "^0.13.6"
 
 read-pkg-up@^2.0.0:
   version "2.0.0"
