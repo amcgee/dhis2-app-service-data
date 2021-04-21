@@ -98,7 +98,7 @@ describe('useAlert and useAlerts used together', () => {
         expect(result.current.alerts).toHaveLength(1)
 
         act(() => {
-            result.current.alerts[0].remove()
+            result.current.alerts[0].remove(result.current.alerts[0].id)
         })
 
         expect(result.current.alerts).toHaveLength(0)
@@ -128,7 +128,7 @@ describe('useAlert and useAlerts used together', () => {
         expect(hook.result.current.alerts).toHaveLength(1)
     })
 
-    it('Will create duplicate alerts when show is called multiple times in a render cycle', () => {
+    it('Will not create duplicate alerts when show is called multiple times in a render cycle', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <AlertsProvider>{children}</AlertsProvider>
         )
@@ -147,7 +147,54 @@ describe('useAlert and useAlerts used together', () => {
             result.current.show()
         })
 
-        expect(result.current.alerts).toHaveLength(2)
+        expect(result.current.alerts).toHaveLength(1)
+    })
+
+    it('Will update the alert if show is called with different arguments', () => {
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <AlertsProvider>{children}</AlertsProvider>
+        )
+        const { result } = renderHook(
+            () => {
+                const alerts = useAlerts()
+                const { show } = useAlert(
+                    ({ message }) => message,
+                    ({ options }) => options
+                )
+
+                return { alerts, show }
+            },
+            { wrapper }
+        )
+        // Show alert for first time
+        const payload1 = {
+            message: 'Message 1',
+            options: { permanent: true, critical: true },
+        }
+
+        act(() => {
+            result.current.show(payload1)
+        })
+
+        expect(result.current.alerts).toHaveLength(1)
+        expect(result.current.alerts[0]).toEqual(
+            expect.objectContaining(payload1)
+        )
+
+        // Show alert for second time
+        const payload2 = {
+            message: 'Message 2',
+            options: { success: true },
+        }
+
+        act(() => {
+            result.current.show(payload2)
+        })
+
+        expect(result.current.alerts).toHaveLength(1)
+        expect(result.current.alerts[0]).toEqual(
+            expect.objectContaining(payload2)
+        )
     })
 
     it('Will increment IDs when multiple alerts are added', () => {
@@ -204,7 +251,7 @@ describe('useAlert and useAlerts used together', () => {
         expect(result.current.alerts).toHaveLength(3)
 
         act(() => {
-            result.current.alerts[1].remove()
+            result.current.alerts[1].remove(result.current.alerts[1].id)
         })
 
         expect(result.current.alerts).toHaveLength(2)
