@@ -10,6 +10,14 @@ interface StateType<T> {
     data?: T
 }
 
+const checkVariables = (variables: any = {}) => {
+    if (typeof variables !== 'object' || Array.isArray(variables)) {
+        console.error(
+            'Query/mutation variables must be represented as a plain object.'
+        )
+    }
+}
+
 export const useQueryExecutor = <ReturnType>({
     execute,
     variables: initialVariables,
@@ -24,6 +32,7 @@ export const useQueryExecutor = <ReturnType>({
         loading: !!immediate,
     })
 
+    checkVariables(initialVariables)
     const variables = useRef(initialVariables)
 
     const abortControllersRef = useRef<AbortController[]>([])
@@ -43,6 +52,8 @@ export const useQueryExecutor = <ReturnType>({
 
     const refetch = useCallback(
         (newVariables = {}) => {
+            checkVariables(newVariables)
+
             setState(state =>
                 !state.called || !state.loading
                     ? { called: true, loading: true }
