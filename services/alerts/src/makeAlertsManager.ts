@@ -22,7 +22,7 @@ const createAlertManagerAlert = ({
 
 type AlertsManagerAlertsMap = Map<number, AlertsManagerAlert>
 
-const toVisbleAlertsArray = (alertsMap: AlertsManagerAlertsMap) =>
+const toVisibleAlertsArray = (alertsMap: AlertsManagerAlertsMap) =>
     Array.from(alertsMap)
         .reduce((alertsArray: Array<AlertsManagerAlert>, [_key, alert]) => {
             if (alert.displayId) {
@@ -53,12 +53,12 @@ export const makeAlertsManager = (
             displayId,
         })
 
-        setAlerts(toVisbleAlertsArray(alertsMap))
+        setAlerts(toVisibleAlertsArray(alertsMap))
     }
 
     const remove = (id: number) => {
         alertsMap.delete(id)
-        setAlerts(toVisbleAlertsArray(alertsMap))
+        setAlerts(toVisibleAlertsArray(alertsMap))
     }
 
     const add = (ref: AlertBarRef): AlertsManagerAlert => {
