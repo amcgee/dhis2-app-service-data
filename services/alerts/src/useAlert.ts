@@ -1,4 +1,4 @@
-import { useContext, useRef, useCallback, useMemo } from 'react'
+import { useContext, useRef, useCallback } from 'react'
 import { AlertsManagerContext } from './AlertsManagerContext'
 import {
     AlertBarComponent,
@@ -13,9 +13,7 @@ export const useAlert = (
 ) => {
     const alertsManager: AlertsManager = useContext(AlertsManagerContext)
     const ref = useRef<AlertBarComponent>()
-    const alert: AlertsManagerAlert = useMemo(() => alertsManager.add(ref), [
-        alertsManager,
-    ])
+    const alert = useRef(<AlertsManagerAlert>alertsManager.add(ref))
 
     const show = useCallback(
         (props?) => {
@@ -26,7 +24,7 @@ export const useAlert = (
                 typeof options === 'function' ? options(props) : options
 
             alertsManager.show({
-                ...alert,
+                ...alert.current,
                 message: resolvedMessage,
                 options: resolvedOptions,
             })
