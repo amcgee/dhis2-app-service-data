@@ -32,7 +32,7 @@ export type CreateAlertManagerAlertOptions = {
 export interface AlertsManagerAlert
     extends Alert,
         CreateAlertManagerAlertOptions {
-    displayId: number | null
+    displayIndex: number | null
     hidden: boolean
 }
 

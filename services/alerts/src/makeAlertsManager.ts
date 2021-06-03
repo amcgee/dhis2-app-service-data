@@ -11,7 +11,7 @@ const createAlertManagerAlert = ({
     remove,
 }: CreateAlertManagerAlertOptions): AlertsManagerAlert => ({
     id,
-    displayId: null,
+    displayIndex: null,
     hidden: true,
     show,
     hide: () => hide(id),
@@ -27,14 +27,14 @@ type AlertsManagerAlertsMap = Map<number, AlertsManagerAlert>
 const toVisibleAlertsArray = (alertsMap: AlertsManagerAlertsMap) =>
     Array.from(alertsMap)
         .reduce((alertsArray: Array<AlertsManagerAlert>, [_key, alert]) => {
-            if (alert.displayId) {
+            if (alert.displayIndex) {
                 alertsArray.push(alert)
             }
             return alertsArray
         }, [])
         .sort(
             (a: AlertsManagerAlert, b: AlertsManagerAlert) =>
-                (a.displayId || 0) - (b.displayId || 0)
+                (a.displayIndex || 0) - (b.displayIndex || 0)
         )
 
 type SetAlertsFunction = React.Dispatch<
@@ -45,14 +45,14 @@ export const makeAlertsManager = (
 ): AlertsManager => {
     const alertsMap: AlertsManagerAlertsMap = new Map()
     let id = 0
-    let displayId = 0
+    let displayIndex = 0
 
     const show = (alert: AlertsManagerAlert) => {
-        displayId++
+        displayIndex++
 
         alertsMap.set(alert.id, {
             ...alert,
-            displayId,
+            displayIndex,
             hidden: false,
             options: {
                 ...alert.options,
