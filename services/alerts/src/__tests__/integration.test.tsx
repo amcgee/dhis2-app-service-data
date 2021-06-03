@@ -86,6 +86,37 @@ describe('useAlert and useAlerts used together', () => {
         )
     })
 
+    it('Can remove an alert with the remove function', () => {
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <AlertsProvider>{children}</AlertsProvider>
+        )
+        const { result } = renderHook(
+            () => {
+                const alerts = useAlerts()
+                const { show, hide, remove } = useAlert('test', {
+                    permanent: true,
+                })
+
+                return { alerts, show, hide, remove }
+            },
+            { wrapper }
+        )
+
+        expect(result.current.alerts).toHaveLength(0)
+
+        act(() => {
+            result.current.show()
+        })
+
+        expect(result.current.alerts).toHaveLength(1)
+
+        act(() => {
+            result.current.remove()
+        })
+
+        expect(result.current.alerts).toHaveLength(0)
+    })
+
     it('Can add an alert with dynamic arguments', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <AlertsProvider>{children}</AlertsProvider>

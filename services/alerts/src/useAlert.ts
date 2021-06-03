@@ -30,8 +30,13 @@ export const useAlert = (
         alertRef.current.hide(alertRef.current.id)
     }, [])
 
+    const remove = useCallback(() => {
+        alertRef.current.remove(alertRef.current.id)
+    }, [])
+
     return {
         show,
         hide,
+        remove,
     }
 }
