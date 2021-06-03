@@ -9,8 +9,9 @@ const placeholder = () => {
 
 const defaultAlertsManager: AlertsManager = {
     add: placeholder as AlertsManagerAddFunction,
-    remove: placeholder,
     show: placeholder,
+    hide: placeholder,
+    remove: placeholder,
 }
 
 export const AlertsManagerContext = React.createContext<AlertsManager>(

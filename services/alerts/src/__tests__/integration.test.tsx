@@ -31,11 +31,59 @@ describe('useAlert and useAlerts used together', () => {
                 message: 'test',
                 options: {
                     permanent: true,
+                    hidden: false,
                 },
             })
         )
         expect(alert).toHaveProperty('remove')
         expect(typeof alert.remove).toBe('function')
+    })
+
+    it('Can toggle the alert hidden propery with the show and hide function', () => {
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <AlertsProvider>{children}</AlertsProvider>
+        )
+        const { result } = renderHook(
+            () => {
+                const alerts = useAlerts()
+                const { show, hide } = useAlert('test', { permanent: true })
+
+                return { alerts, show, hide }
+            },
+            { wrapper }
+        )
+
+        act(() => {
+            result.current.show()
+        })
+
+        expect(result.current.alerts).toHaveLength(1)
+
+        expect(result.current.alerts[0]).toEqual(
+            expect.objectContaining({
+                hidden: false,
+                options: {
+                    permanent: true,
+                    hidden: false,
+                },
+            })
+        )
+
+        act(() => {
+            result.current.hide()
+        })
+
+        expect(result.current.alerts).toHaveLength(1)
+
+        expect(result.current.alerts[0]).toEqual(
+            expect.objectContaining({
+                hidden: true,
+                options: {
+                    permanent: true,
+                    hidden: true,
+                },
+            })
+        )
     })
 
     it('Can add an alert with dynamic arguments', () => {
@@ -70,6 +118,7 @@ describe('useAlert and useAlerts used together', () => {
                 message: 'Successfully deleted hendrik',
                 options: {
                     critical: true,
+                    hidden: false,
                 },
             })
         )
@@ -178,7 +227,13 @@ describe('useAlert and useAlerts used together', () => {
 
         expect(result.current.alerts).toHaveLength(1)
         expect(result.current.alerts[0]).toEqual(
-            expect.objectContaining(payload1)
+            expect.objectContaining({
+                ...payload1,
+                options: {
+                    ...payload1.options,
+                    hidden: false,
+                },
+            })
         )
 
         // Show alert for second time
@@ -193,7 +248,13 @@ describe('useAlert and useAlerts used together', () => {
 
         expect(result.current.alerts).toHaveLength(1)
         expect(result.current.alerts[0]).toEqual(
-            expect.objectContaining(payload2)
+            expect.objectContaining({
+                ...payload2,
+                options: {
+                    ...payload2.options,
+                    hidden: false,
+                },
+            })
         )
     })
 

@@ -1,5 +1,4 @@
 import {
-    AlertBarRef,
     AlertsManager,
     AlertsManagerAlert,
     CreateAlertManagerAlertOptions,
@@ -8,16 +7,19 @@ import {
 const createAlertManagerAlert = ({
     id,
     show,
+    hide,
     remove,
-    ref,
 }: CreateAlertManagerAlertOptions): AlertsManagerAlert => ({
     id,
-    ref,
     displayId: null,
+    hidden: true,
     show,
+    hide: () => hide(id),
     remove: () => remove(id),
     message: '',
-    options: {},
+    options: {
+        hidden: true,
+    },
 })
 
 type AlertsManagerAlertsMap = Map<number, AlertsManagerAlert>
@@ -51,9 +53,26 @@ export const makeAlertsManager = (
         alertsMap.set(alert.id, {
             ...alert,
             displayId,
+            hidden: false,
+            options: {
+                ...alert.options,
+                // Avoid unexpect behaviour when passing a hidden option to `useAlert`
+                hidden: false,
+            },
         })
 
         setAlerts(toVisibleAlertsArray(alertsMap))
+    }
+
+    const hide = (id: number) => {
+        const alert = alertsMap.get(id)
+
+        if (alert) {
+            alert.hidden = true
+            alert.options.hidden = true
+
+            setAlerts(toVisibleAlertsArray(alertsMap))
+        }
     }
 
     const remove = (id: number) => {
@@ -61,16 +80,17 @@ export const makeAlertsManager = (
         setAlerts(toVisibleAlertsArray(alertsMap))
     }
 
-    const add = (ref: AlertBarRef): AlertsManagerAlert => {
+    const add = (): AlertsManagerAlert => {
         id++
-        const alert = createAlertManagerAlert({ id, show, remove, ref })
+        const alert = createAlertManagerAlert({ id, show, hide, remove })
         alertsMap.set(id, alert)
         return alert
     }
 
     return {
-        show,
-        remove,
         add,
+        show,
+        hide,
+        remove,
     }
 }

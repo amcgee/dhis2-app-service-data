@@ -1,11 +1,3 @@
-import { Component, RefObject } from 'react'
-
-export interface AlertBarComponent extends Component {
-    hide: () => void
-}
-
-export type AlertBarRef = RefObject<AlertBarComponent | undefined>
-
 type AlertAction = {
     label: string
     onClick: () => void
@@ -21,6 +13,7 @@ export type AlertOptions = {
     permanent?: boolean
     success?: boolean
     warning?: boolean
+    hidden?: boolean
     onHidden?: () => void
 }
 
@@ -31,21 +24,23 @@ export type Alert = {
 
 export type CreateAlertManagerAlertOptions = {
     id: number
-    ref: AlertBarRef
-    remove: (id: number) => void
     show: (alert: AlertsManagerAlert) => void
+    hide: (id: number) => void
+    remove: (id: number) => void
 }
 
 export interface AlertsManagerAlert
     extends Alert,
         CreateAlertManagerAlertOptions {
     displayId: number | null
+    hidden: boolean
 }
 
-export type AlertsManagerAddFunction = (ref: AlertBarRef) => AlertsManagerAlert
+export type AlertsManagerAddFunction = () => AlertsManagerAlert
 
 export type AlertsManager = {
     add: AlertsManagerAddFunction
-    remove: (id: number) => void
     show: (alert: AlertsManagerAlert) => void
+    hide: (id: number) => void
+    remove: (id: number) => void
 }
