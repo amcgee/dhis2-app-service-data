@@ -31,11 +31,90 @@ describe('useAlert and useAlerts used together', () => {
                 message: 'test',
                 options: {
                     permanent: true,
+                    hidden: false,
                 },
             })
         )
         expect(alert).toHaveProperty('remove')
         expect(typeof alert.remove).toBe('function')
+    })
+
+    it('Can toggle the alert hidden propery with the show and hide function', () => {
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <AlertsProvider>{children}</AlertsProvider>
+        )
+        const { result } = renderHook(
+            () => {
+                const alerts = useAlerts()
+                const { show, hide } = useAlert('test', { permanent: true })
+
+                return { alerts, show, hide }
+            },
+            { wrapper }
+        )
+
+        act(() => {
+            result.current.show()
+        })
+
+        expect(result.current.alerts).toHaveLength(1)
+
+        expect(result.current.alerts[0]).toEqual(
+            expect.objectContaining({
+                hidden: false,
+                options: {
+                    permanent: true,
+                    hidden: false,
+                },
+            })
+        )
+
+        act(() => {
+            result.current.hide()
+        })
+
+        expect(result.current.alerts).toHaveLength(1)
+
+        expect(result.current.alerts[0]).toEqual(
+            expect.objectContaining({
+                hidden: true,
+                options: {
+                    permanent: true,
+                    hidden: true,
+                },
+            })
+        )
+    })
+
+    it('Can remove an alert with the remove function', () => {
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <AlertsProvider>{children}</AlertsProvider>
+        )
+        const { result } = renderHook(
+            () => {
+                const alerts = useAlerts()
+                const { show, hide, remove } = useAlert('test', {
+                    permanent: true,
+                })
+
+                return { alerts, show, hide, remove }
+            },
+            { wrapper }
+        )
+
+        expect(result.current.alerts).toHaveLength(0)
+
+        act(() => {
+            result.current.show()
+        })
+
+        expect(result.current.alerts).toHaveLength(1)
+
+        act(() => {
+            result.current.remove()
+        })
+
+        expect(result.current.alerts).toHaveLength(0)
     })
 
     it('Can add an alert with dynamic arguments', () => {
@@ -70,6 +149,7 @@ describe('useAlert and useAlerts used together', () => {
                 message: 'Successfully deleted hendrik',
                 options: {
                     critical: true,
+                    hidden: false,
                 },
             })
         )
@@ -98,7 +178,7 @@ describe('useAlert and useAlerts used together', () => {
         expect(result.current.alerts).toHaveLength(1)
 
         act(() => {
-            result.current.alerts[0].remove()
+            result.current.alerts[0].remove(result.current.alerts[0].id)
         })
 
         expect(result.current.alerts).toHaveLength(0)
@@ -128,7 +208,7 @@ describe('useAlert and useAlerts used together', () => {
         expect(hook.result.current.alerts).toHaveLength(1)
     })
 
-    it('Will create duplicate alerts when show is called multiple times in a render cycle', () => {
+    it('Will not create duplicate alerts when show is called multiple times in a render cycle', () => {
         const wrapper = ({ children }: { children?: ReactNode }) => (
             <AlertsProvider>{children}</AlertsProvider>
         )
@@ -147,7 +227,66 @@ describe('useAlert and useAlerts used together', () => {
             result.current.show()
         })
 
-        expect(result.current.alerts).toHaveLength(2)
+        expect(result.current.alerts).toHaveLength(1)
+    })
+
+    it('Will update the alert if show is called with different arguments', () => {
+        const wrapper = ({ children }: { children?: ReactNode }) => (
+            <AlertsProvider>{children}</AlertsProvider>
+        )
+        const { result } = renderHook(
+            () => {
+                const alerts = useAlerts()
+                const { show } = useAlert(
+                    ({ message }) => message,
+                    ({ options }) => options
+                )
+
+                return { alerts, show }
+            },
+            { wrapper }
+        )
+        // Show alert for first time
+        const payload1 = {
+            message: 'Message 1',
+            options: { permanent: true, critical: true },
+        }
+
+        act(() => {
+            result.current.show(payload1)
+        })
+
+        expect(result.current.alerts).toHaveLength(1)
+        expect(result.current.alerts[0]).toEqual(
+            expect.objectContaining({
+                ...payload1,
+                options: {
+                    ...payload1.options,
+                    hidden: false,
+                },
+            })
+        )
+
+        // Show alert for second time
+        const payload2 = {
+            message: 'Message 2',
+            options: { success: true },
+        }
+
+        act(() => {
+            result.current.show(payload2)
+        })
+
+        expect(result.current.alerts).toHaveLength(1)
+        expect(result.current.alerts[0]).toEqual(
+            expect.objectContaining({
+                ...payload2,
+                options: {
+                    ...payload2.options,
+                    hidden: false,
+                },
+            })
+        )
     })
 
     it('Will increment IDs when multiple alerts are added', () => {
@@ -204,7 +343,7 @@ describe('useAlert and useAlerts used together', () => {
         expect(result.current.alerts).toHaveLength(3)
 
         act(() => {
-            result.current.alerts[1].remove()
+            result.current.alerts[1].remove(result.current.alerts[1].id)
         })
 
         expect(result.current.alerts).toHaveLength(2)

@@ -2,6 +2,7 @@ type AlertAction = {
     label: string
     onClick: () => void
 }
+
 export type AlertOptions = {
     actions?: AlertAction[]
     className?: string
@@ -12,12 +13,8 @@ export type AlertOptions = {
     permanent?: boolean
     success?: boolean
     warning?: boolean
+    hidden?: boolean
     onHidden?: () => void
-}
-
-export interface AlertsManager {
-    add: (alert: Alert) => void
-    remove: (id: number) => void
 }
 
 export type Alert = {
@@ -25,7 +22,25 @@ export type Alert = {
     options: AlertOptions
 }
 
-export interface AlertsManagerAlert extends Alert {
+export type CreateAlertManagerAlertOptions = {
     id: number
-    remove: () => void
+    show: (alert: AlertsManagerAlert) => void
+    hide: (id: number) => void
+    remove: (id: number) => void
+}
+
+export interface AlertsManagerAlert
+    extends Alert,
+        CreateAlertManagerAlertOptions {
+    displayIndex: number | null
+    hidden: boolean
+}
+
+export type AlertsManagerAddFunction = () => AlertsManagerAlert
+
+export type AlertsManager = {
+    add: AlertsManagerAddFunction
+    show: (alert: AlertsManagerAlert) => void
+    hide: (id: number) => void
+    remove: (id: number) => void
 }
