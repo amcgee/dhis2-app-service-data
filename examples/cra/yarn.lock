@@ -1047,20 +1047,20 @@
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
 "@dhis2/app-runtime@file:../../runtime":
-  version "2.7.1"
+  version "2.8.0"
   dependencies:
-    "@dhis2/app-service-alerts" "2.7.1"
-    "@dhis2/app-service-config" "2.7.1"
-    "@dhis2/app-service-data" "2.7.1"
+    "@dhis2/app-service-alerts" "2.8.0"
+    "@dhis2/app-service-config" "2.8.0"
+    "@dhis2/app-service-data" "2.8.0"
 
-"@dhis2/app-service-alerts@2.7.1", "@dhis2/app-service-alerts@file:../../services/alerts":
-  version "2.7.1"
+"@dhis2/app-service-alerts@2.8.0", "@dhis2/app-service-alerts@file:../../services/alerts":
+  version "2.8.0"
 
-"@dhis2/app-service-config@2.7.1", "@dhis2/app-service-config@file:../../services/config":
-  version "2.7.1"
+"@dhis2/app-service-config@2.8.0", "@dhis2/app-service-config@file:../../services/config":
+  version "2.8.0"
 
-"@dhis2/app-service-data@2.7.1", "@dhis2/app-service-data@file:../../services/data":
-  version "2.7.1"
+"@dhis2/app-service-data@2.8.0", "@dhis2/app-service-data@file:../../services/data":
+  version "2.8.0"
 
 "@hapi/address@2.x.x":
   version "2.1.4"
@@ -6625,9 +6625,9 @@ memory-fs@^0.5.0:
     readable-stream "^2.0.1"
 
 merge-deep@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/merge-deep/-/merge-deep-3.0.2.tgz#f39fa100a4f1bd34ff29f7d2bf4508fbb8d83ad2"
-  integrity sha512-T7qC8kg4Zoti1cFd8Cr0M+qaZfOwjlPDEdZIIPPB2JZctjaPM4fX+i7HOId69tAti2fvO6X5ldfYUONDODsrkA==
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/merge-deep/-/merge-deep-3.0.3.tgz#1a2b2ae926da8b2ae93a0ac15d90cd1922766003"
+  integrity sha512-qtmzAS6t6grwEkNrunqTBdn0qKwFgNWvlxUbAV8es9M7Ot1EbyApytCnvE0jALPa46ZpKDUo527kKiaWplmlFA==
   dependencies:
     arr-union "^3.1.0"
     clone-deep "^0.2.4"
