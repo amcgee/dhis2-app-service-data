@@ -1,0 +1,36 @@
+{
+    "name": "@dhis2/app-service-offline",
+    "description": "A runtime service for online/offline detection and offline caching",
+    "version": "2.10.0-pwa.1",
+    "main": "./build/cjs/index.js",
+    "module": "./build/es/index.js",
+    "exports": {
+        "import": "./build/es/index.js",
+        "require": "./build/cjs/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dhis2/app-runtime.git",
+        "directory": "services/offline"
+    },
+    "author": "Kai Vandivier <kai@dhis2.org>",
+    "license": "BSD-3-Clause",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "build/**"
+    ],
+    "scripts": {
+        "build": "d2-app-scripts build",
+        "start": "d2-app-scripts start",
+        "test": "d2-app-scripts test",
+        "deploy": "d2-app-scripts deploy"
+    },
+    "peerDependencies": {
+        "@dhis2/app-service-alerts": "^2.10.0-pwa.1",
+        "prop-types": "^15.7.2",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
+    }
+}
